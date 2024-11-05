@@ -1,47 +1,63 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/bolivaricono.png') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/cssInicioSesion.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/cssCuadroModal.css') }}" />
+    <!-- <script src="{{ asset('assets/js/BloqueoAtras.js') }}"></script> -->
+    <title>SB Inventario / Inicio Sesión</title>
+</head>
+<body style="background-image: url('{{ asset('assets/img/fondoinventario1.jpg') }}'); background-size: cover; background-repeat: no-repeat; background-color: #001f3f;">
+    <div class="container2">
+        <h1 class="text-center">INVENTARIO SIMON BOLIVAR 2023</h1>
+        <img src="{{ asset('assets/img/bolivaricono.png') }}" alt="ICONODELBOLIVAR" class="imagen-titulo">
+    </div>
+    <div class="container">
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
+            @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+            <div class="icon">
+                <img src="{{ asset('assets/img/sesion2.png') }}" alt="Icono" />
+            </div>
+            <h1>Iniciar Sesión</h1>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+            <label for="email">Correo Electronico:</label>
+            <input type="email" id="email" name="email" placeholder="Nombre de usuario" required />
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" placeholder="Contraseña" required />
+
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+
+        <p><a href="{{route('password.request')}}" id="recuperar-contraseña-link" class="password-link">¿Olvidaste tu contraseña?</a></p>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="modal-close">&times;</span>
+                <h2>Recuperación de Contraseña</h2>
+                <p>Ingresa tu dirección de correo electrónico para solicitar la recuperación de contraseña:</p>
+                <form id="recuperar-contraseña-form" action="{{ route('password.email') }}" method="POST">
+                    @csrf
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" required />
+                    <button type="submit">Enviar Solicitud</button>
+                </form>
+            </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        <!-- <script src="{{ asset('assets/js/cuadrocontrasenia.js') }}"></script> -->
+        <!-- <script src="{{ asset('assets/js/validarEmail.js') }}"></script> -->
+    </div>
+</body>
+</html>
